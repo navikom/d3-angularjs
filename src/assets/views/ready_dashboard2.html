@@ -1,0 +1,54 @@
+<!-- Page Header -->
+<div class="content bg-image overflow-hidden" style="background-image: url('assets/img/photos/photo3@2x.jpg');">
+    <div class="push-50-t push-15">
+        <h1 class="h2 text-white animated zoomIn">Dashboard</h1>
+        <h2 class="h5 text-white-op animated zoomIn">Welcome Administrator</h2>
+    </div>
+</div>
+<!-- END Page Header -->
+
+<!-- Stats -->
+<div class="content bg-white border-b">
+    <div class="row items-push text-uppercase">
+        <div class="col-xs-6 col-sm-3">
+            <div class="font-w700 text-gray-darker animated fadeIn">Product Sales</div>
+            <div class="text-muted animated fadeIn"><small><i class="si si-calendar"></i> Today</small></div>
+            <a class="h2 font-w300 text-primary animated flipInX" href="javascript:void(0)">300</a>
+        </div>
+        <div class="col-xs-6 col-sm-3">
+            <div class="font-w700 text-gray-darker animated fadeIn">Product Sales</div>
+            <div class="text-muted animated fadeIn"><small><i class="si si-calendar"></i> This Month</small></div>
+            <a class="h2 font-w300 text-primary animated flipInX" href="javascript:void(0)">8,790</a>
+        </div>
+        <div class="col-xs-6 col-sm-3">
+            <div class="font-w700 text-gray-darker animated fadeIn">Total Earnings</div>
+            <div class="text-muted animated fadeIn"><small><i class="si si-calendar"></i> All Time</small></div>
+            <a class="h2 font-w300 text-primary animated flipInX" href="javascript:void(0)">$ 93,880</a>
+        </div>
+        <div class="col-xs-6 col-sm-3">
+            <div class="font-w700 text-gray-darker animated fadeIn">Average Sale</div>
+            <div class="text-muted animated fadeIn"><small><i class="si si-calendar"></i> All Time</small></div>
+            <a class="h2 font-w300 text-primary animated flipInX" href="javascript:void(0)">$ 270</a>
+        </div>
+    </div>
+</div>
+<!-- END Stats -->
+
+<!-- Page Content -->
+<div class="content">
+    <div class="row col-lg-6">
+        <h1>{{charts.one.title}}</h1>
+
+        <one-bars-chart chart-data="charts.one.data"></one-bars-chart>
+    </div>
+    <div class="row col-lg-6">
+        <h1>{{charts.two.title}}</h1>
+        <two-bars-chart chart-data="charts.two.data" label="title" on-click="d3OnClick(item)"></two-bars-chart>
+    </div>
+    <div class="row col-lg-12">
+        <h1>{{charts.three.title}}</h1>
+        <three-bars-chart chart-data="charts.three.data"></three-bars-chart>
+        <span class="graph-tooltip">Hover me!</span>
+    </div>
+</div>
+<!-- END Page Content -->
