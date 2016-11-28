@@ -244,26 +244,35 @@ App.directive('oneBarsChart', function ($parse) {
 		//we don't want to overwrite our directive declaration
 		//in the HTML mark-up
 		replace: false,
-		scope: {data: '=chartData'},
+		scope: {
+			data: '=chartData',
+			refresh: '='
+		},
 		link: function (scope, element, attrs) {
 			//converting all data passed thru into an array
 			var data = scope.data;
-			//in D3, any selection[0] contains the group
-			//selection[0][0] is the DOM node
-			//but we won't need that this time
 			var chart = d3.select(element[0]);
-			//to our original directive markup bars-chart
-			//we add a div with out chart stling and bind each
-			//data entry to the chart
-			chart.append("div").attr("class", "chart")
-			.selectAll('div')
-			.data(data).enter().append("div")
-			.transition().ease(d3.easeElastic)
-			.style("width", function(d) { return d + "%"; })
-			.text(function(d) { return d + "%"; });
-			//a little of magic: setting it's width based
-			//on the data value (d)
-			//and text all with a smooth transition
+
+			scope.render = function(data, callback){
+
+				chart.selectAll("*").remove();
+
+				chart.append("div").attr("class", "chart")
+				.selectAll('div')
+				.data(data).enter().append("div")
+				.transition().ease(d3.easeElastic)
+				.style("width", function(d) { return d + "%"; })
+				.text(function(d) { return d + "%"; });
+
+				callback && callback();
+
+			};
+
+			scope.render(data);
+			scope.$watch('refresh', function (newVal, oldVal) {
+				scope.render(data, newVal);
+			});
+
 		}
 	};
 });
@@ -276,7 +285,8 @@ App.directive('twoBarsChart', function($parse) {
 		scope: {
 			data: "=chartData",
 			label: "@",
-			onClick: "&"
+			onClick: "&",
+			refresh: '='
 		},
 		link: function(scope, element, iAttrs) {
 			var svg = d3.select(element[0])
@@ -300,8 +310,12 @@ App.directive('twoBarsChart', function($parse) {
 				return scope.render(newVals);
 			}, true);
 
+			scope.$watch('refresh', function (newVal, oldVal) {
+				scope.render(scope.data, newVal);
+			}, true);
+
 			// define render function
-			scope.render = function(data){
+			scope.render = function(data, callback){
 
 				// remove all previous items before render
 				svg.selectAll("*").remove();
@@ -347,6 +361,11 @@ App.directive('twoBarsChart', function($parse) {
 				// feMerge filter. Order of specifying inputs is important!
 				var feMerge = filter.append("feMerge");
 
+				var color = d3.scaleLinear()
+				.domain([0, data.length - 1])
+				.range(["#aad", "#556"]);
+
+
 				feMerge.append("feMergeNode")
 				.attr("in", "offsetBlur");
 				feMerge.append("feMergeNode")
@@ -361,9 +380,8 @@ App.directive('twoBarsChart', function($parse) {
 					alert('Name: ' + d.title + '\nScore: ' + d.score);
 					return scope.render(data);
 				})
-				.attr("fill", function(){
-					return getRandomColor();
-				})
+				.attr("class", "layer")
+				.style("fill", function(d, i) { return color(i); })
 				.attr("height", 20) // height of each bar
 				.attr("width", 0) // initial width of 0 for transition
 				.attr("x", 10) // half of the 20 side margin specified above
@@ -387,20 +405,10 @@ App.directive('twoBarsChart', function($parse) {
 				.attr("x", 15)
 				.text(function(d){return d[scope.label];});
 
+				callback && callback();
+
 			};
 
-			function getRandomColor() {
-				var letters = '0123456789'.split('');
-				var color = '#';
-				for (var i = 0; i < 6; i++) {
-					color += letters[getRandomInt(0, 9)];
-				}
-				return color;
-			}
-
-			function getRandomInt(min, max) {
-				return Math.floor(Math.random() * (max - min)) + min;
-			}
 		}
 	};
 });
@@ -411,16 +419,13 @@ App.directive('threeBarsChart', function ($parse) {
 		restrict: 'E',
 		scope: {
 			data: "=chartData",
-			onClick: "&"
+			onClick: "&",
+			refresh: '='
 		},
 		link: function (scope, element, attrs) {
 			var svg = d3.select(element[0])
 				.append("svg")
 				.attr("width", "100%");
-
-			window.onresize = function() {
-				return scope.$apply();
-			};
 
 			scope.$watch(function(){
 					return angular.element(window)[0].innerWidth;
@@ -435,7 +440,11 @@ App.directive('threeBarsChart', function ($parse) {
 				return scope.render(newVals);
 			}, true);
 
-			scope.render = function(data){
+			scope.$watch('refresh', function (newVal, oldVal) {
+				scope.render(scope.data, newVal);
+			}, true);
+
+			scope.render = function(data, callback){
 
 				svg.selectAll("*").remove();
 
@@ -511,6 +520,7 @@ App.directive('threeBarsChart', function ($parse) {
 					.text(function(d) { return d; });
 
 				});
+				callback && callback();
 			};
 
 			var tooltip = document.getElementsByClassName('graph-tooltip')[0];
@@ -521,7 +531,7 @@ App.directive('threeBarsChart', function ($parse) {
 
 				tooltip.style.left = (d.x + d.r) + 'px';
 
-				tooltip.style.top = (d.y - d.r) + 'px';
+				tooltip.style.top = (d.y - d.r/2) + 'px';
 
 				tooltip.style.opacity = 1;
 				tooltip.style.animationName = "show";
@@ -531,6 +541,204 @@ App.directive('threeBarsChart', function ($parse) {
 				tooltip.style.animationName = "hide";
 				tooltip.style.opacity = 0;
 			}
+		}
+	};
+});
+
+App.directive('fourBarsChart', function ($parse) {
+
+	return {
+		restrict: 'E',
+		scope: {
+			type: '='
+		},
+		link: function (scope, element, attrs) {
+			var svg = d3.select(element[0])
+			.append("svg")
+			.attr("width", "100%");
+
+			scope.$watch(function(){
+					return angular.element(window)[0].innerWidth;
+				}, function(){
+					return scope.render(scope.data);
+				}
+			);
+
+			scope.render = function(data){
+
+				svg.selectAll("*").remove();
+
+				var n = 4, // number of layers
+					m = 64, // number of samples per layer
+					stack = d3.layout.stack(),
+					layers = stack(d3.range(n).map(function() { return bumpLayer(m, .1); })),
+					yGroupMax = d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y; }); }),
+					yStackMax = d3.max(layers, function(layer) { return d3.max(layer, function(d) { return d.y0 + d.y; }); });
+
+				var margin = {top: 40, right: 10, bottom: 20, left: 10},
+					width = element[0].offsetWidth - margin.left - margin.right,
+					height = 500 - margin.top - margin.bottom;
+
+				svg.attr("width", width + margin.left + margin.right)
+				.attr("height", height + margin.top + margin.bottom)
+				.append("g")
+				.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+				var x = d3.scaleBand()
+					.domain(d3.range(m))
+					.rangeRound([0, width])
+					.padding(.08);
+
+
+				var y = d3.scaleLinear()
+					.domain([0, yStackMax])
+					.range([height, 0]);
+
+
+
+				var color = d3.scaleLinear()
+					.domain([0, n - 1])
+					.range(["#aad", "#556"]);
+
+				var xAxis = d3.axisBottom(x);
+
+				var layer = svg.selectAll(".layer")
+				.data(layers)
+				.enter().append("g")
+				.attr("class", "layer")
+				.style("fill", function(d, i) { return color(i); });
+
+				var rect = layer.selectAll("rect")
+				.data(function(d) { return d; })
+				.enter().append("rect")
+				.attr("x", function(d) { return x(d.x); })
+				.attr("y", height)
+				.attr("width", x.bandwidth())
+				.attr("height", 0);
+
+				rect.transition()
+				.delay(function(d, i) { return i * 10; })
+				.attr("y", function(d) { return y(d.y0 + d.y); })
+				.attr("height", function(d) { return y(d.y0) - y(d.y0 + d.y); });
+
+				svg.append("g")
+				.attr("class", "x axis")
+				.attr("transform", "translate(0," + height + ")")
+				.call(xAxis);
+
+				function transitionGrouped() {
+					rect.transition()
+					.duration(500)
+					.delay(function(d, i) { return i * 10; })
+					.attr("x", function(d, i, j) {
+						return x(d.x) + x.bandwidth() / n + x.bandwidth() / n / 2;
+					})
+					.attr("width", x.bandwidth() / n)
+					.transition()
+					.attr("y", function(d) { return y(d.y); })
+					.attr("height", function(d) { return height - y(d.y); });
+				}
+
+				function transitionStacked() {
+					rect.transition()
+					.duration(500)
+					.delay(function(d, i) { return i * 10; })
+					.attr("y", function(d) { return y(d.y0 + d.y); })
+					.attr("height", function(d) { return y(d.y0) - y(d.y0 + d.y); })
+					.transition()
+					.attr("x", function(d) { return x(d.x); })
+					.attr("width", x.bandwidth());
+				}
+
+				// setup a watch on 'grouped' to switch between views
+				scope.$watch('type', function (newVal, oldVal) {
+					if (newVal === 'grouped') {
+						transitionGrouped();
+					} else {
+						transitionStacked();
+					}
+				});
+
+			};
+
+			// Inspired by Lee Byron's test data generator.
+			function bumpLayer(n, o) {
+
+				function bump(a) {
+					var x = 1 / (.1 + Math.random()),
+						y = 2 * Math.random() - .5,
+						z = 10 / (.1 + Math.random());
+					for (var i = 0; i < n; i++) {
+						var w = (i / n - y) * z;
+						a[i] += x * Math.exp(-w * w);
+					}
+				}
+
+				var a = [], i;
+				for (i = 0; i < n; ++i) a[i] = o + o * Math.random();
+				for (i = 0; i < 5; ++i) bump(a);
+				return a.map(function(d, i) { return {x: i, y: Math.max(0, d)}; });
+			}
+		}
+	};
+});
+
+App.directive('fiveBarsChart', function ($parse) {
+
+	return {
+		restrict: 'E',
+		scope: {
+			type: '='
+		},
+		link: function (scope, element, attrs) {
+			var svg = d3.select(element[0])
+			.append("svg")
+			.attr("width", "100%");
+
+			scope.$watch(function(){
+					return angular.element(window)[0].innerWidth;
+				}, function(){
+					return scope.render(scope.data);
+				}
+			);
+
+			scope.render = function(data){
+
+				svg.selectAll("*").remove();
+
+
+
+			};
+		}
+	};
+});
+
+App.directive('sixBarsChart', function ($parse) {
+
+	return {
+		restrict: 'E',
+		scope: {
+			type: '='
+		},
+		link: function (scope, element, attrs) {
+			var svg = d3.select(element[0])
+			.append("svg")
+			.attr("width", "100%");
+
+			scope.$watch(function(){
+					return angular.element(window)[0].innerWidth;
+				}, function(){
+					return scope.render(scope.data);
+				}
+			);
+
+			scope.render = function(data){
+
+				svg.selectAll("*").remove();
+
+
+
+			};
 		}
 	};
 });

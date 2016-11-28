@@ -36,19 +36,97 @@
 
 <!-- Page Content -->
 <div class="content">
-    <div class="row col-lg-6">
-        <h1>{{charts.one.title}}</h1>
+    <div class="row">
+        <div class="col-lg-6">
+            <div id="block-one" class="block">
+                <div class="block-header">
+                    <ul class="block-options">
+                        <li>
+                            <button type="button" data-ng-click="charts.one.onClick('#block-one')" data-action="refresh_toggle">
+                                <i class="si si-refresh"></i>
+                            </button>
+                        </li>
+                    </ul>
+                    <h3 class="block-title">{{charts.one.title}}</h3>
+                </div>
+                <div class="block-content block-content-full text-center">
+                    <one-bars-chart chart-data="charts.one.data" refresh="charts.one.refresh"></one-bars-chart>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div id="block-two" class="block">
+                <div class="block-header">
+                    <ul class="block-options">
+                        <li>
+                            <button type="button" data-ng-click="charts.two.onClick('#block-two')">
+                                <i class="si si-refresh"></i>
+                            </button>
+                        </li>
+                    </ul>
+                    <h3 class="block-title">{{charts.two.title}}</h3>
+                </div>
+                <div class="block-content block-content-full text-center">
+                    <two-bars-chart chart-data="charts.two.data" label="title" refresh="charts.two.refresh" on-click="d3OnClick(item)"></two-bars-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row"  style="position: relative">
+        <div id="block-three" class="block">
+            <div class="block-header">
+                <ul class="block-options">
+                    <li>
+                        <button type="button" data-ng-click="charts.three.onClick('#block-three')">
+                            <i class="si si-refresh"></i>
+                        </button>
+                    </li>
+                </ul>
+                <h3 class="block-title">{{charts.three.title}}</h3>
+            </div>
+            <div class="block-content block-content-full text-center">
+                <three-bars-chart chart-data="charts.three.data" refresh="charts.three.refresh" ></three-bars-chart>
+                <span class="graph-tooltip">Hover me!</span>
+            </div>
+        </div>
 
-        <one-bars-chart chart-data="charts.one.data"></one-bars-chart>
     </div>
-    <div class="row col-lg-6">
-        <h1>{{charts.two.title}}</h1>
-        <two-bars-chart chart-data="charts.two.data" label="title" on-click="d3OnClick(item)"></two-bars-chart>
+    <div class="row">
+        <div class="block">
+            <div class="block-header">
+                <h3 class="block-title">{{charts.four.title}}</h3>
+            </div>
+            <div class="block-content block-content-full text-center" style="position: relative">
+                <form class="graph-form">
+                    <label><input type="radio" value="grouped" ng-model="charts.four.typeGraph"> Grouped</label>
+                    <label><input type="radio" value="stacked" ng-model="charts.four.typeGraph"> Stacked</label>
+                </form>
+                <four-bars-chart type="charts.four.typeGraph"></four-bars-chart>
+            </div>
+        </div>
     </div>
-    <div class="row col-lg-12">
-        <h1>{{charts.three.title}}</h1>
-        <three-bars-chart chart-data="charts.three.data"></three-bars-chart>
-        <span class="graph-tooltip">Hover me!</span>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="block">
+                <div class="block-header">
+                    <h3 class="block-title">{{charts.five.title}}</h3>
+                </div>
+                <div class="block-content block-content-full text-center">
+                    <five-bars-chart></five-bars-chart>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="block">
+                <div class="block-header">
+                    <h3 class="block-title">{{charts.six.title}}</h3>
+                </div>
+                <div class="block-content block-content-full text-center">
+                    <six-bars-chart></six-bars-chart>
+                </div>
+            </div>
+        </div>
     </div>
+
 </div>
 <!-- END Page Content -->

@@ -378,6 +378,8 @@ App.factory('uiHelpers', function () {
                             return false;
                     }
                 }
+
+                return elBlock;
             }
         }
     };

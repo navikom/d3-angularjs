@@ -11553,7 +11553,6 @@ div.tagsinput span.tag a:hover {
   color: #aaa;
 }
 svg, .chart {
-  background: #eee;
   padding: 3px;
 }
 
@@ -11609,4 +11608,10 @@ svg, .chart {
   to {
     -webkit-transform: scale(0);
   }
+}
+
+.graph-form {
+  position: absolute;
+  right: 10px;
+  top: -35px;
 }

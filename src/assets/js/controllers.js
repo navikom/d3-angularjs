@@ -62,10 +62,15 @@ App.controller('DashboardCtrl', ['$scope', '$localStorage', '$window',
 App.controller('Dashboard2Ctrl', ['$scope', '$http',
     function ($scope, $http) {
 
+        var clickTime = (+new Date);
         $scope.charts = {
             one: {
                 title: 'Example 1',
-                data: [40,90,80,15,25,60,10]
+                data: [40,90,80,15,25,60,10],
+                refresh: function(){},
+                onClick: function(id){
+                    refresh(id, 'one');
+                }
             },
             two: {
                 title: 'Example 2',
@@ -76,14 +81,42 @@ App.controller('Dashboard2Ctrl', ['$scope', '$http',
                     {title: "Alex", score:52},
                     {title: "Fred", score:71},
                     {title: "Pos", score: 19}
-                ]
+                ],
+                refresh: function(){},
+                onClick: function(id){
+                    refresh(id, 'two');
+                }
             },
             three: {
                 title: 'Example 3',
-                data: 'assets/data/flare.csv'
+                data: 'assets/data/flare.csv',
+                refresh: function(){},
+                onClick: function(id){
+                    refresh(id, 'three');
+                }
+            },
+            four: {
+                title: 'Example 4',
+                typeGraph: 'stacked'
+            },
+            five: {
+                title: 'Example 5'
+            },
+            six: {
+                title: 'Example 6'
             }
         };
 
+        function refresh( id, key ){
+            // block-opt-refresh
+            var elem = $scope.helpers.uiBlocks(id, "refresh_toggle");
+            $scope.charts[key].refresh = function(){
+                setTimeout(function(){
+                    elem.removeClass('block-opt-refresh');
+                }, 1000);
+            }
+
+        }
     }
 ]);
 
