@@ -38,6 +38,70 @@
 <div class="content">
     <div class="row">
         <div class="col-lg-6">
+            <div class="block">
+                <div class="block-header">
+                    <h3 class="block-title">{{charts.five.title}}</h3>
+                </div>
+                <div class="block-content block-content-full text-center">
+                    <five-bars-chart chart-data="charts.five.data"></five-bars-chart>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div id="block-six" class="block">
+                <div class="block-header">
+                    <ul class="block-options">
+                        <li>
+                            <button type="button" data-ng-click="charts.six.onClick('#block-six')" data-action="refresh_toggle">
+                                <i class="si si-refresh"></i>
+                            </button>
+                        </li>
+                    </ul>
+                    <h3 class="block-title">{{charts.six.title}} (Click on a segment to get a zoomed-in view of its children)</h3>
+                </div>
+                <div class="block-content block-content-full text-center">
+                    <div id="code_hierarchy_legend"><h2>&nbsp;</h2><p>&nbsp;</p></div>
+                    <div id="code_hierarchy">&nbsp;</div>
+                    <six-bars-chart chart-data="charts.six.data" refresh="charts.six.refresh"></six-bars-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="block">
+            <div class="block-header">
+                <h3 class="block-title">{{charts.four.title}}</h3>
+            </div>
+            <div class="block-content block-content-full text-center" style="position: relative">
+                <form class="graph-form">
+                    <label><input type="radio" value="grouped" ng-model="charts.four.typeGraph"> Grouped</label>
+                    <label><input type="radio" value="stacked" ng-model="charts.four.typeGraph"> Stacked</label>
+                </form>
+                <four-bars-chart type="charts.four.typeGraph"></four-bars-chart>
+            </div>
+        </div>
+    </div>
+    <div class="row"  style="position: relative">
+        <div id="block-three" class="block">
+            <div class="block-header">
+                <ul class="block-options">
+                    <li>
+                        <button type="button" data-ng-click="charts.three.onClick('#block-three')">
+                            <i class="si si-refresh"></i>
+                        </button>
+                    </li>
+                </ul>
+                <h3 class="block-title">{{charts.three.title}}</h3>
+            </div>
+            <div class="block-content block-content-full text-center">
+                <three-bars-chart chart-data="charts.three.data" refresh="charts.three.refresh" ></three-bars-chart>
+                <span class="graph-tooltip">Hover me!</span>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
             <div id="block-one" class="block">
                 <div class="block-header">
                     <ul class="block-options">
@@ -72,70 +136,5 @@
             </div>
         </div>
     </div>
-    <div class="row"  style="position: relative">
-        <div id="block-three" class="block">
-            <div class="block-header">
-                <ul class="block-options">
-                    <li>
-                        <button type="button" data-ng-click="charts.three.onClick('#block-three')">
-                            <i class="si si-refresh"></i>
-                        </button>
-                    </li>
-                </ul>
-                <h3 class="block-title">{{charts.three.title}}</h3>
-            </div>
-            <div class="block-content block-content-full text-center">
-                <three-bars-chart chart-data="charts.three.data" refresh="charts.three.refresh" ></three-bars-chart>
-                <span class="graph-tooltip">Hover me!</span>
-            </div>
-        </div>
-
-    </div>
-    <div class="row">
-        <div class="block">
-            <div class="block-header">
-                <h3 class="block-title">{{charts.four.title}}</h3>
-            </div>
-            <div class="block-content block-content-full text-center" style="position: relative">
-                <form class="graph-form">
-                    <label><input type="radio" value="grouped" ng-model="charts.four.typeGraph"> Grouped</label>
-                    <label><input type="radio" value="stacked" ng-model="charts.four.typeGraph"> Stacked</label>
-                </form>
-                <four-bars-chart type="charts.four.typeGraph"></four-bars-chart>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-6">
-            <div class="block">
-                <div class="block-header">
-                    <h3 class="block-title">{{charts.five.title}}</h3>
-                </div>
-                <div class="block-content block-content-full text-center">
-                    <five-bars-chart chart-data="charts.five.data"></five-bars-chart>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-6">
-            <div id="block-six" class="block">
-                <div class="block-header">
-                    <ul class="block-options">
-                        <li>
-                            <button type="button" data-ng-click="charts.six.onClick('#block-six')" data-action="refresh_toggle">
-                                <i class="si si-refresh"></i>
-                            </button>
-                        </li>
-                    </ul>
-                    <h3 class="block-title">{{charts.six.title}} (Click on a segment to get a zoomed-in view of its children)</h3>
-                </div>
-                <div class="block-content block-content-full text-center">
-                    <div id="code_hierarchy_legend"><h2>&nbsp;</h2><p>&nbsp;</p></div>
-                    <div id="code_hierarchy">&nbsp;</div>
-                    <six-bars-chart chart-data="charts.six.data" refresh="charts.six.refresh"></six-bars-chart>
-                </div>
-            </div>
-        </div>
-    </div>
-
 </div>
 <!-- END Page Content -->
