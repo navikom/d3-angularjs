@@ -16,12 +16,8 @@ var App = angular.module('app', [
 // Router configuration
 App.config(['$stateProvider', '$urlRouterProvider',
     function ($stateProvider, $urlRouterProvider) {
-        $urlRouterProvider.otherwise('/angularjs');
+        $urlRouterProvider.otherwise('/dashboard');
         $stateProvider
-            .state('angularjs', {
-                url: '/angularjs',
-                templateUrl: 'assets/views/ready_angularjs.html'
-            })
             .state('dashboard', {
                 url: '/dashboard',
                 templateUrl: 'assets/views/ready_dashboard2.html',
