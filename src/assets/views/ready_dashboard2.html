@@ -112,17 +112,26 @@
                     <h3 class="block-title">{{charts.five.title}}</h3>
                 </div>
                 <div class="block-content block-content-full text-center">
-                    <five-bars-chart></five-bars-chart>
+                    <five-bars-chart chart-data="charts.five.data"></five-bars-chart>
                 </div>
             </div>
         </div>
         <div class="col-lg-6">
-            <div class="block">
+            <div id="block-six" class="block">
                 <div class="block-header">
-                    <h3 class="block-title">{{charts.six.title}}</h3>
+                    <ul class="block-options">
+                        <li>
+                            <button type="button" data-ng-click="charts.one.onClick('#block-six')" data-action="refresh_toggle">
+                                <i class="si si-refresh"></i>
+                            </button>
+                        </li>
+                    </ul>
+                    <h3 class="block-title">{{charts.six.title}} (Click on a segment to get a zoomed-in view of its children)</h3>
                 </div>
                 <div class="block-content block-content-full text-center">
-                    <six-bars-chart></six-bars-chart>
+                    <div id="code_hierarchy_legend"><h2>&nbsp;</h2><p>&nbsp;</p></div>
+                    <div id="code_hierarchy">&nbsp;</div>
+                    <six-bars-chart chart-data="charts.six.data" refresh="charts.six.refresh"></six-bars-chart>
                 </div>
             </div>
         </div>

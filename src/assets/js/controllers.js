@@ -100,10 +100,16 @@ App.controller('Dashboard2Ctrl', ['$scope', '$http',
                 typeGraph: 'stacked'
             },
             five: {
-                title: 'Example 5'
+                title: 'Example 5',
+                data: 'assets/data/population.csv'
             },
             six: {
-                title: 'Example 6'
+                title: 'Example 6',
+                data: 'assets/data/flare.json',
+                refresh: function(){},
+                onClick: function(id){
+                    refresh(id, 'six');
+                }
             }
         };
 
