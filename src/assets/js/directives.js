@@ -793,13 +793,14 @@ App.directive('sixBarsChart', function ($parse) {
 			scope.$watch(function(){
 					return angular.element(window)[0].innerWidth;
 				}, function(){
-					return scope.render(scope.data);
+					//return scope.render(scope.data);
 				}
 			);
 
 			scope.$watch('refresh', function (newVal, oldVal) {
 				scope.render(scope.data, newVal);
 			}, true);
+
 
 			scope.render = function(data, callback){
 
@@ -825,12 +826,13 @@ App.directive('sixBarsChart', function ($parse) {
 				var width = element[0].offsetWidth;
 
 				d3.select(self.frameElement).style("height", width);
-
+				console.log(scope.data)
 				d3.json(scope.data, function(error, r) {
+
 					if (error) throw error;
 					init_code_hierarchy_plot("code_hierarchy", r, count_function, color_function, label_function, legend_function);
-					callback && callback();
 				});
+
 				function init_code_hierarchy_plot(element_id, data, count_function, color_function, title_function, legend_function){
 					var plot = document.getElementById(element_id);
 
@@ -850,6 +852,13 @@ App.directive('sixBarsChart', function ($parse) {
 					.attr("height", height)
 					.append("g")
 					.attr("transform", "translate(" + width / 2 + "," + height * .52 + ")");
+
+					if(callback){
+						svg.
+							attr('opacity', 0)
+							.transition().duration(4000).attr("opacity", 1);
+						callback();
+					}
 
 					function process_data(data, level, start_deg, stop_deg){
 						var name = data[0];
