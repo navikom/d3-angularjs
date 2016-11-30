@@ -65,7 +65,7 @@ App.controller('Dashboard2Ctrl', ['$scope', '$http',
         var clickTime = (+new Date);
         $scope.charts = {
             one: {
-                title: 'Example 1',
+                title: 'Example 5',
                 data: [40,90,80,15,25,60,10],
                 refresh: function(){},
                 onClick: function(id){
@@ -73,7 +73,7 @@ App.controller('Dashboard2Ctrl', ['$scope', '$http',
                 }
             },
             two: {
-                title: 'Example 2',
+                title: 'Example 6',
                 data: [
                     {title: "Greg", score:12},
                     {title: "Ari", score:43},
@@ -88,7 +88,7 @@ App.controller('Dashboard2Ctrl', ['$scope', '$http',
                 }
             },
             three: {
-                title: 'Example 3',
+                title: 'Example 4',
                 data: 'assets/data/flare.csv',
                 refresh: function(){},
                 onClick: function(id){
@@ -96,15 +96,15 @@ App.controller('Dashboard2Ctrl', ['$scope', '$http',
                 }
             },
             four: {
-                title: 'Example 4',
+                title: 'Example 3',
                 typeGraph: 'stacked'
             },
             five: {
-                title: 'Example 5',
+                title: 'Example 1',
                 data: 'assets/data/population.csv'
             },
             six: {
-                title: 'Example 6',
+                title: 'Example 2',
                 data: 'assets/data/flare.json',
                 refresh: function(){},
                 onClick: function(id){
