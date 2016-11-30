@@ -11615,3 +11615,15 @@ svg, .chart {
   right: 10px;
   top: -35px;
 }
+
+#code_hierarchy {
+  position:relative;
+  width: 80%;
+  margin:0 auto;
+}
+
+#code_hierarchy_legend {
+  height:80%;
+  font-size:1.4em;
+  text-align:center;
+}
